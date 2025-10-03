@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>React Basics</title>
+  </head>
+  <body>
+    <div class="js-container"></div>
+
+    <script src="https://unpkg.com/supersimpledev@8.6.4/external-library.js"></script>
+
+    <script src="https://unpkg.com/supersimpledev/react.js"></script>
+    <script src="https://unpkg.com/supersimpledev/react-dom.js"></script>
+
+    <script src="https://unpkg.com/supersimpledev/babel.js"></script>
+    <script type="text/babel">
+      function ProductDetails({
+        productname,
+        price,
+        buttonText,
+        showDiscount,
+        discountedPrice,
+      }) {
+        return (
+          <>
+            {showDiscount ? (
+              <>
+                <p>{productname}</p>
+                <del>{price}</del>
+                <p>{discountedPrice}</p>
+                <button>{buttonText}</button>
+              </>
+            ) : (
+              <>
+                <p>{productname}</p>
+                <p>{price}</p>
+                <button>{buttonText}</button>
+              </>
+            )}
+          </>
+        );
+      }
+
+      function App() {
+        return (
+          <>
+            <ProductDetails
+              productname="Cotton Socks"
+              price="$6.00"
+              discountedPrice="$4.00"
+              buttonText="Add to Cart"
+              showDiscount={true}
+            />
+            ,
+            <ProductDetails
+              productname="Tennis-ball"
+              price="$7.40"
+              discountedPrice="$5.00"
+              buttonText="Add to Cart"
+              showDiscount={true}
+            />
+            ,
+            <ProductDetails
+              productname="T-Shirt"
+              price="$8.90"
+              buttonText="Add to Cart"
+              showDiscount={false}
+            />
+          </>
+        );
+      }
+      const container = document.querySelector(".js-container");
+      ReactDOM.createRoot(container).render(<App />);
+    </script>
+  </body>
+</html>
