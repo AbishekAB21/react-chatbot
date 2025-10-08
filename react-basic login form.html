@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Log in Screen</title>
+
+    <style>
+      .login-form-container {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+      }
+
+      .auth-button-container {
+        display: flex;
+        flex-direction: row;
+        justify-content: flex-start;
+        align-items: flex-start;
+        margin-top: 20px;
+      }
+
+      .password-textfield-container {
+        display: flex;
+        flex-direction: row;
+        justify-content: flex-start;
+        align-items: center;
+      }
+
+      .text-field {
+        display: flex;
+        flex-direction: row;
+        margin-top: 10px;
+        border-radius: 5px;
+        padding: 10px;
+        width: 190px;
+        text-align: start;
+        border-color: rgb(118, 118, 118);
+        border-width: 1.5px;
+        font-size: 10px;
+      }
+
+      .auth-buttons {
+        margin-right: 10px;
+        color: white;
+        padding: 10px;
+        text-align: start;
+        border-radius: 5px;
+        border-style: none;
+        background-color: rgb(0, 123, 255);
+        cursor: pointer;
+      }
+
+      .auth-buttons:last-child {
+        margin-right: 0; /* remove extra space after last button */
+      }
+
+      .show-button {
+        margin-top: 10px;
+        margin-left: 10px;
+        height: fit-content;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="js-container"></div>
+
+    <script src="https://unpkg.com/supersimpledev@8.6.4/external-library.js"></script>
+
+    <script src="https://unpkg.com/supersimpledev/react.js"></script>
+    <script src="https://unpkg.com/supersimpledev/react-dom.js"></script>
+
+    <script src="https://unpkg.com/supersimpledev/babel.js"></script>
+    <script type="text/babel">
+      function LoginForm({ isVisible, setIsVisible }) {
+        // Toggle Password view
+        function TogglePasswordView() {
+          const passwordVisibility = !isVisible;
+          setIsVisible(passwordVisibility);
+        }
+        return (
+          <div className="login-form-container">
+            <p>Hello! Welcome to this website</p>
+
+            {/* Username */}
+            <input className="text-field" placeholder="Email" />
+
+            {/* Password */}
+            <div className="password-textfield-container">
+              <input
+                className="text-field"
+                placeholder="Password"
+                type={isVisible ? "text" : "password"}
+              />
+              <button className="show-button" onClick={TogglePasswordView}>
+                Show
+              </button>
+            </div>
+
+            {/* Auth buttons */}
+            <div className="auth-button-container">
+              <button className="auth-buttons">Login</button>
+              <button className="auth-buttons">Sign up</button>
+            </div>
+          </div>
+        );
+      }
+
+      function App() {
+        const [isVisible, setIsVisible] = React.useState(false);
+
+        return <LoginForm isVisible={isVisible} setIsVisible={setIsVisible} />;
+      }
+      const container = document.querySelector(".js-container");
+      ReactDOM.createRoot(container).render(<App />);
+    </script>
+  </body>
+</html>
