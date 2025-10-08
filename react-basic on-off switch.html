@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>React Basics</title>
+
+    <style>
+      .custom-ONbutton {
+        background-color: rgb(25, 135, 84);
+        color: white;
+        padding: 10px 15px;
+        border-radius: 10px;
+        border-style: none;
+      }
+      .custom-OFFbutton {
+        background-color: rgb(220, 53, 69);
+        color: white;
+        padding: 10px 15px;
+        border-radius: 10px;
+        border-style: none;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="js-container"></div>
+
+    <script src="https://unpkg.com/supersimpledev@8.6.4/external-library.js"></script>
+
+    <script src="https://unpkg.com/supersimpledev/react.js"></script>
+    <script src="https://unpkg.com/supersimpledev/react-dom.js"></script>
+
+    <script src="https://unpkg.com/supersimpledev/babel.js"></script>
+    <script type="text/babel">
+      function CustomSwitch({ isButton, setIsButton }) {
+
+        function onButtonClick(){
+
+          const toggleONOFF = !isButton;
+
+          setIsButton(toggleONOFF);
+        }
+        return (
+          <button 
+          onClick= {onButtonClick}
+          className={isButton ? "custom-OFFbutton" : "custom-ONbutton"}>
+            {isButton? "OFF" : "ON"}
+          </button>
+        );
+      }
+
+      function App() {
+        const [isButton, setIsButton] = React.useState(false);
+
+        return <CustomSwitch isButton={isButton} setIsButton={setIsButton} />;
+      }
+      const container = document.querySelector(".js-container");
+      ReactDOM.createRoot(container).render(<App />);
+    </script>
+  </body>
+</html>

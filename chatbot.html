@@ -1,7 +1,82 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>React Basics</title>
+    <title>Chatbot</title>
+
+    <style>
+      body {
+        font-family: Arial;
+        margin-top: 0px;
+        margin-bottom: 0px;
+      }
+
+      .send-button {
+        background-color: rgb(25, 135, 85);
+        color: white;
+        margin-left: 10px;
+        padding: 12px 20px;
+        border-radius: 10px;
+        border: none;
+        font-size: 15px;
+        cursor: pointer;
+      }
+
+      .text-field {
+        flex-grow: 1;
+        padding: 12px 15px;
+        text-align: start;
+        border-radius: 10px;
+        border-color: rgb(118, 118, 118);
+        border-width: 1px;
+        font-size: 15px;
+      }
+
+      .text-field-container {
+        display: flex;
+        margin-bottom: 60px;
+      }
+
+      .app-container {
+        display: flex;
+        flex-direction: column;
+        max-width: 600px;
+        margin-left: auto;
+        margin-right: auto;
+        height: 100vh;
+      }
+
+      .robot-message {
+        display: flex;
+        align-items: start;
+      }
+
+      .user-message {
+        display: flex;
+        justify-content: end;
+        align-items: start;
+      }
+
+      .chat-message-text {
+        background-color: rgb(238, 238, 238);
+        padding: 15px 20px;
+        border-radius: 10px;
+        margin-right: 10px;
+        margin-left: 10px;
+        margin-bottom: 20px;
+        max-width: 300px;
+      }
+
+      .chat-message-profile {
+        width: 45px;
+      }
+
+      .chat-messages-container {
+        flex-grow: 1;
+        margin-top: 20px;
+        overflow: scroll;
+        scrollbar-width: none;
+      }
+    </style>
   </head>
   <body>
     <div class="js-container"></div>
@@ -15,8 +90,6 @@
 
     <script src="https://unpkg.com/supersimpledev/babel.js"></script>
     <script type="text/babel">
-
-
       function ChatInput({ chatMessages, setChatMessages }) {
         const [inputText, setInputText] = React.useState("");
 
@@ -25,55 +98,69 @@
         }
 
         function sendMessage() {
-
           const newChatMessages = [
             ...chatMessages,
             { message: inputText, sender: "user", id: crypto.randomUUID() },
-          ]
+          ];
 
           setChatMessages(newChatMessages);
 
           const response = Chatbot.getResponse(inputText);
-           setChatMessages([
+          setChatMessages([
             ...newChatMessages,
             { message: response, sender: "robot", id: crypto.randomUUID() },
           ]);
 
-          setInputText('');
+          setInputText("");
         }
 
         return (
-          <>
+          <div className="text-field-container">
             <input
+              className="text-field"
               placeholder="Send a message to chatbot"
               size="30"
               onChange={saveInputText}
-              value = {inputText}
+              value={inputText}
             />
-            <button onClick={sendMessage}>Send</button>
-          </>
+            <button className="send-button" onClick={sendMessage}>
+              Send
+            </button>
+          </div>
         );
       }
 
       function ChatMessage({ message, sender }) {
         return (
-          <div>
+          <div className={sender == "robot" ? "robot-message" : "user-message"}>
             {
               // if the value on the left of && is true the value to the right is taken
-              sender == "robot" && <img src="robot.png" width="50" />
+              sender == "robot" && (
+                <img src="robot.png" className="chat-message-profile" />
+              )
             }
-            {message}
+            <div className="chat-message-text">{message}</div>
             {
               // if the value on the left of && is true the value to the right is taken
-              sender == "user" && <img src="user.png" width="50" />
+              sender == "user" && (
+                <img src="user.png" className="chat-message-profile" />
+              )
             }
           </div>
         );
       }
 
       function Messages({ chatMessages }) {
+        const chatMessagesRef = React.useRef(null);
+
+        React.useEffect(() => {
+          const containerElem = chatMessagesRef.current
+          if(containerElem){
+            containerElem.scrollTop = containerElem.scrollHeight;
+          }
+        }, [chatMessages]);
         return (
-          <>
+          <div className="chat-messages-container" ref={chatMessagesRef}>
             {chatMessages.map((chatMessage) => {
               return (
                 <ChatMessage
@@ -83,7 +170,7 @@
                 />
               );
             })}
-          </>
+          </div>
         );
       }
 
@@ -116,13 +203,13 @@
         // const setChatMessages = array[1];
 
         return (
-          <>
+          <div className="app-container">
+            <Messages chatMessages={chatMessages} />
             <ChatInput
               chatMessages={chatMessages}
               setChatMessages={setChatMessages}
             />
-            <Messages chatMessages={chatMessages} />
-          </>
+          </div>
         );
       }
       const container = document.querySelector(".js-container");
